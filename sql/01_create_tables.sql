@@ -49,7 +49,7 @@ CREATE TABLE BestOnGround (
 bogID CHAR(3) NOT NULL,
 rank CHAR(1) NOT NULL,
 points NUMBER(3) NOT NULL,
-CONSTRAINT BestOnGround_PK PRIMARY KEY (bestOnGroundID)
+CONSTRAINT BestOnGround_PK PRIMARY KEY (bogID)
 );
 
 CREATE TABLE Result (
@@ -139,7 +139,7 @@ gameMinute NUMBER(3,0) NOT NULL,
 CONSTRAINT GamePlayer_PK PRIMARY KEY (gamePlayerID),
 CONSTRAINT GamePlayer_Game_FK FOREIGN KEY (gameID) REFERENCES Game(gameID),
 CONSTRAINT GamePlayer_Player_FK FOREIGN KEY (playerID) REFERENCES Player(playerID),
-CONSTRAINT GamePlayer_Position_FK FOREIGN KEY (positionID) REFERENCES    StartPosition(positionID)
+CONSTRAINT GamePlayer_Position_FK FOREIGN KEY (positionID) REFERENCES StartPosition(positionID)
 );
 
 CREATE TABLE AwardedCard (
@@ -158,7 +158,7 @@ goalID CHAR(5) NOT NULL,
 gamePlayerID CHAR(6) NOT NULL,
 gameMinute NUMBER(3,0) NOT NULL,
 CONSTRAINT ScoredGoal_PK PRIMARY KEY (goalID),
-CONSTRAINT ScoredGoal_GamePlayer_FK FOREIGN KEY (gamePlayerID) REFERENCES 	GamePlayer(gamePlayerID)
+CONSTRAINT ScoredGoal_GamePlayer_FK FOREIGN KEY (gamePlayerID) REFERENCES GamePlayer(gamePlayerID)
 );
 
 CREATE TABLE BOGPlayer (
@@ -167,6 +167,6 @@ bogID CHAR(3) NOT NULL,
 gamePlayerID CHAR(6) NOT NULL,
 CONSTRAINT BogPlayer_PK PRIMARY KEY (bogPlayerID),
 CONSTRAINT BogPlayer_BOG_FK FOREIGN KEY (bogID) REFERENCES BestOnGround(bogID),
-CONSTRAINT BogPlayer_GamePlayer_FK FOREIGN KEY (gamePlayerID) REFERENCES 	GamePlayer(gamePlayerID)
+CONSTRAINT BogPlayer_GamePlayer_FK FOREIGN KEY (gamePlayerID) REFERENCES GamePlayer(gamePlayerID)
 );
 

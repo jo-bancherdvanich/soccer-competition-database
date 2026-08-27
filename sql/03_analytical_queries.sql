@@ -5,22 +5,24 @@
 -- ========================================================================
 -- Query 1: Season ladder: result points, BoG points, goals, and home/away wins per club
 -- ========================================================================
+-- LEFT JOIN + COALESCE so a club is never dropped from the ladder just because
+-- it happens to have no home wins, no away wins, or no best-on-ground points.
 SELECT
 cl.clubName AS "Club Name",
-crs.total_result_points AS "Result Points",
-bogp.total_bog_points AS "BOG Points",
-tgs.goals_scored_count AS "Goals Scored",
-hws.home_win_count AS "Home Wins",
-aws.away_win_count AS "Away Wins",
-crs.total_result_points + bogp.total_bog_points AS "Total Points (Result + BOG)"
+COALESCE(crs.total_result_points, 0) AS "Result Points",
+COALESCE(bogp.total_bog_points, 0) AS "BOG Points",
+COALESCE(tgs.goals_scored_count, 0) AS "Goals Scored",
+COALESCE(hws.home_win_count, 0) AS "Home Wins",
+COALESCE(aws.away_win_count, 0) AS "Away Wins",
+COALESCE(crs.total_result_points, 0) + COALESCE(bogp.total_bog_points, 0) AS "Total Points (Result + BOG)"
 FROM Club cl
-JOIN (
+LEFT JOIN (
 SELECT cg.clubID, SUM(rs.points) AS total_result_points
 FROM ClubGame cg
 JOIN Result rs ON rs.resultID = cg.resultID
 GROUP BY cg.clubID
 ) crs ON crs.clubID = cl.clubID
-JOIN (
+LEFT JOIN (
 SELECT pl.clubID, SUM(bog.points) AS total_bog_points
 FROM BogPlayer bp
 JOIN BestOnGround bog ON bog.bogID = bp.bogID
@@ -28,24 +30,24 @@ JOIN GamePlayer gp ON gp.gamePlayerID = bp.gamePlayerID
 JOIN Player pl ON pl.playerID = gp.playerID
 GROUP BY pl.clubID
 ) bogp ON bogp.clubID = cl.clubID
-JOIN (
+LEFT JOIN (
 SELECT cg.clubID, SUM(cg.goalScored) AS goals_scored_count
 FROM ClubGame cg
 GROUP BY cg.clubID
 ) tgs ON tgs.clubID = cl.clubID
-JOIN (
+LEFT JOIN (
 SELECT cg.clubID, COUNT(*) AS home_win_count
 FROM ClubGame cg
-WHERE cg.resultID = 'RS02'
+WHERE cg.resultID = 'RS01'   /* RS01 = Home Win */
 GROUP BY cg.clubID
 ) hws ON hws.clubID = cl.clubID
-JOIN (
+LEFT JOIN (
 SELECT cg.clubID, COUNT(*) AS away_win_count
 FROM ClubGame cg
-WHERE cg.resultID = 'RS01'
+WHERE cg.resultID = 'RS02'   /* RS02 = Away Win */
 GROUP BY cg.clubID
 ) aws ON aws.clubID = cl.clubID
-ORDER BY "Result Points" DESC;
+ORDER BY "Total Points (Result + BOG)" DESC, "Result Points" DESC;
 
 -- ========================================================================
 -- Query 2: Club competition summary: points, goals, and full home/away win-loss record
@@ -111,7 +113,7 @@ ORDER BY gm.gameDate, gm.gameID, sg.gameMinute;
 SELECT
 grn.name AS "Ground Name",
 COUNT(sg.goalID) AS "Total Goals",
-ROUND(COUNT(sg.goalID) / COUNT(DISTINCT gm.gameID), 0) AS "Average Goals per Game"
+ROUND(COUNT(sg.goalID) * 1.0 / COUNT(DISTINCT gm.gameID), 2) AS "Average Goals per Game"
 FROM Ground grn
 JOIN Game gm ON grn.groundID = gm.groundID
 JOIN GamePlayer gp ON gm.gameID = gp.gameID
@@ -215,7 +217,25 @@ JOIN GamePlayer gp ON pl.playerID = gp.playerID
 JOIN BogPlayer bp ON gp.gamePlayerID = bp.gamePlayerID
 JOIN BestOnGround bog ON bp.bogID = bog.bogID
 JOIN Game gm ON gp.gameID = gm.gameID
-WHERE pl.playerID = 'PL810' /* PL810: Chris Brooks, MVP from 4.3a */
+/* Derive the MVP rather than hard-coding an ID, so this query stays correct
+   if the data changes. Same MAX-subquery pattern as Query 6. */
+WHERE pl.playerID IN (
+SELECT gp2.playerID
+FROM BogPlayer bp2
+JOIN BestOnGround bog2 ON bp2.bogID = bog2.bogID
+JOIN GamePlayer gp2 ON bp2.gamePlayerID = gp2.gamePlayerID
+GROUP BY gp2.playerID
+HAVING SUM(bog2.points) = (
+SELECT MAX(total_pts)
+FROM (
+SELECT SUM(bog3.points) AS total_pts
+FROM BogPlayer bp3
+JOIN BestOnGround bog3 ON bp3.bogID = bog3.bogID
+JOIN GamePlayer gp3 ON bp3.gamePlayerID = gp3.gamePlayerID
+GROUP BY gp3.playerID
+     )
+  )
+)
 ORDER BY gm.gameDate;
 
 -- ========================================================================
@@ -258,15 +278,8 @@ JOIN Game gm ON cg.gameID = gm.gameID
 JOIN Ground grn ON gm.groundID = grn.groundID
 WHERE cg.clubID != grn.clubID
 GROUP BY cl.clubID, cl.clubName
-/* Finding the highest away team score */
-HAVING SUM(rs.points) = (
-SELECT MAX(highest_pts)
-FROM (SELECT cg.clubID, SUM(rs.points) AS highest_pts
-FROM ClubGame cg
-JOIN Result rs ON cg.resultID = rs.resultID
-JOIN Game gm ON cg.gameID = gm.gameID
-JOIN Ground grn ON gm.groundID = grn.groundID
-WHERE cg.clubID != grn.clubID
-GROUP BY cg.clubID)
-);
+/* Ordered by away points, so the club with the best away record is the top
+   row. Previously a HAVING clause filtered this down to that single club,
+   which contradicted the query's own heading and the README. */
+ORDER BY "Total Away Points" DESC, "Away Wins" DESC;
 

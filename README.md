@@ -18,17 +18,24 @@ Built for **ISYS5000 Database** at Curtin University as a group project (Group 1
 
 The schema has **16 tables** linked by 18 documented business rules. A central `Game` connects to clubs (via `ClubGame`), players (via `GamePlayer`), and referees (via `GameReferee`). From each player's appearance, the model branches into goals (`ScoredGoal`), disciplinary cards (`AwardedCard`), starting positions (`StartPosition`), and best-on-ground awards (`BOGPlayer` → `BestOnGround`). Substitutions are captured within `GamePlayer` (via `gameMinute` and the "Substitute" start position) rather than in a separate table.
 
+📖 **Read the documentation on GitHub — no download needed:**
+
+| | |
+|---|---|
+| 🗺️ **[Entity-Relationship Diagram](docs/erd.md)** | The model, how it is shaped, and why |
+| 📋 **[Business Rules](docs/business-rules.md)** | All 18 rules with cardinalities |
+| 📖 **[Data Dictionary](docs/data-dictionary.md)** | Every table, column, type and constraint |
+| ⭐ **[Analytical Queries](docs/queries.md)** | All 9 queries explained, **with real results** |
+
+*The full design report is also here as a [PDF](docs/soccer-database-report.pdf).*
+
 ---
 
-## 🔧 Revised After Feedback
+## 🔧 Design Decisions Worth Noting
 
-This repository is a **revised version** that incorporates the marker's feedback on the original submission:
-
-- **Removed the `Substitution` table.** It created an unresolved many-to-many (two foreign keys into `GamePlayer` from the same parent). Substitutions are instead captured within `GamePlayer` using `gameMinute` and the "Substitute" start position, which is the cleaner relational approach.
-- **Corrected business rules.** The `Club`–`Ground` relationship now reads as training/ownership ("A Club trains at one and only one Ground") rather than where games are played, and the `GamePlayer`–`ScoredGoal` descriptor was fixed.
-- **Added `numOfSpectators`** to the `Game` entity in the ERD and schema (previously only added via a later `UPDATE`).
-
-The original submission scored 74.85%. These are the corrections the marker noted would have lifted it to 80%+.
+- **No `Substitution` table.** A dedicated table would need two foreign keys into `GamePlayer` from the same parent, creating an unresolved many-to-many. Substitutions are instead captured within `GamePlayer` using `gameMinute` and the "Substitute" start position — the cleaner relational approach, and it loses no information.
+- **`Club`–`Ground` is training and ownership,** not where games are played. A club trains at one and only one ground; a game is played *at* a ground, which is how the queries work out who was at home.
+- **`numOfSpectators` sits on the `Game` entity** in both the ERD and the schema, rather than being applied later by an `UPDATE`.
 
 ---
 
@@ -60,20 +67,36 @@ See [`sql/03_analytical_queries.sql`](sql/03_analytical_queries.sql).
 ## 📁 Repository Contents
 
 - `sql/01_create_tables.sql` — Oracle DDL: all 16 tables with PK/FK constraints
-- `sql/02_insert_data.sql` — sample data for the full competition (Oracle `INSERT ALL`)
-- `sql/03_analytical_queries.sql` — the analytical business-question queries
-- `images/erd.png` — the entity-relationship diagram
+- `sql/02_insert_data.sql` — sample data: a complete 8-club, 14-round season (2,227 rows)
+- `sql/03_analytical_queries.sql` — the nine analytical business-question queries
+- `docs/erd.md` — the ERD and how the model is shaped
 - `docs/business-rules.md` — the 18 revised business rules
-- `docs/soccer-database-report.pdf` — the full original design report (ERD, business rules, data dictionary, query explanations)
+- `docs/data-dictionary.md` — every table, column, type and constraint
+- `docs/queries.md` — the queries explained, with real output
+- `images/erd.png` — the entity-relationship diagram
+- `docs/soccer-database-report.pdf` — the design report as a PDF
 
 ---
 
 ## ▶️ How to Run
 
 In an Oracle environment (e.g. SQL Developer or Oracle Live SQL), run the scripts in order:
-1. `sql/01_create_tables.sql` — creates the schema
-2. `sql/02_insert_data.sql` — loads the sample data
+1. `sql/01_create_tables.sql` — creates the 16 tables
+2. `sql/02_insert_data.sql` — loads the season
 3. `sql/03_analytical_queries.sql` — run any query to see the analysis
+
+The script set is verified end to end: all 16 tables create, all **2,227 rows load with no
+foreign key violations**, and all nine queries return results. See
+[`docs/queries.md`](docs/queries.md) for what each one produces.
+
+### About the sample data
+
+The clubs, coaches, grounds, referees, competition weeks, start positions and result types are
+the original reference data for this fictional Busselton-region competition. The fixture data —
+the 56-game double round robin, and the appearances, goals, cards and best-on-ground awards that
+hang off it — is generated deterministically so the season is complete and internally consistent:
+8 clubs, 12 players each, 14 rounds, every club playing every other club home and away exactly
+once.
 
 ---
 
@@ -94,4 +117,4 @@ This was a group project for ISYS5000 (Group 13: Waranyu Bancherdvanich, Farhan 
 
 ## 📫 Author
 
-**Waranyu (JO) Bancherdvanich** — [LinkedIn](https://www.linkedin.com/in/waranyu-ban) · [GitHub](https://github.com/jo-bancherdvanich)
+**Waranyu (JO) Bancherdvanich** — [Portfolio](https://jo-bancherdvanich.github.io/waranyu-CV/) · [LinkedIn](https://www.linkedin.com/in/waranyu-ban) · [GitHub](https://github.com/jo-bancherdvanich)
