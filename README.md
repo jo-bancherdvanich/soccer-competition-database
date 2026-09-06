@@ -4,6 +4,10 @@ A relational database for a soccer competition, designed and implemented in **Or
 
 Built at Curtin University, Perth, as a three-person group project. My contribution is described below.
 
+> ### 🌐 [Explore the interactive case study →](https://waranyu-cv.vercel.app/football-database.html)
+>
+> Part of my portfolio at **[waranyu-cv.vercel.app](https://waranyu-cv.vercel.app)**. The walkthrough there lets you run the SQL queries against the real data in the browser.
+
 ---
 
 ![Oracle SQL](https://img.shields.io/badge/Database-Oracle_SQL-F80000?logo=oracle&logoColor=white)
@@ -115,6 +119,17 @@ This was a three-person group project (Waranyu Bancherdvanich, Farhan Bhuiyan, T
 
 ---
 
+## 🔗 More of my work
+
+| Project | Case study | Repository |
+|---|---|---|
+| ⚡ Australia's renewable electricity transition | [View →](https://waranyu-cv.vercel.app/renewable.html) | [Repo](https://github.com/jo-bancherdvanich/renewable-electricity-dashboard) |
+| 🛒 FreshMart data warehouse & dashboard | [View →](https://waranyu-cv.vercel.app/freshmart.html) | [Repo](https://github.com/jo-bancherdvanich/freshmart-data-warehouse) |
+| ⚽ Football club database | [View →](https://waranyu-cv.vercel.app/football-database.html) | [Repo](https://github.com/jo-bancherdvanich/soccer-competition-database) |
+| 🌦️ WeatherWise | [View →](https://waranyu-cv.vercel.app/weatherwise.html) | [Repo](https://github.com/jo-bancherdvanich/Weatherwise_Waranyu.B) |
+
+---
+
 ## 📫 Author
 
-**Waranyu (JO) Bancherdvanich** — [Portfolio](https://jo-bancherdvanich.github.io/waranyu-CV/) · [LinkedIn](https://www.linkedin.com/in/waranyu-ban) · [GitHub](https://github.com/jo-bancherdvanich)
+**Waranyu (JO) Bancherdvanich** — [Portfolio](https://waranyu-cv.vercel.app) · [LinkedIn](https://www.linkedin.com/in/waranyu-ban) · [GitHub](https://github.com/jo-bancherdvanich)
