@@ -4,9 +4,7 @@ A relational database for a soccer competition, designed and implemented in **Or
 
 Built at Curtin University, Perth, as a three-person group project. My contribution is described below.
 
-> ### 🌐 [Explore the interactive case study →](https://waranyu-cv.vercel.app/football-database.html)
->
-> Part of my portfolio at **[waranyu-cv.vercel.app](https://waranyu-cv.vercel.app)**. The walkthrough there lets you run the SQL queries against the real data in the browser.
+> 🌐 **[Explore the interactive case study →](https://waranyu-cv.vercel.app/football-database.html)**
 
 ---
 
@@ -125,7 +123,6 @@ This was a three-person group project (Waranyu Bancherdvanich, Farhan Bhuiyan, T
 |---|---|---|
 | ⚡ Australia's renewable electricity transition | [View →](https://waranyu-cv.vercel.app/renewable.html) | [Repo](https://github.com/jo-bancherdvanich/renewable-electricity-dashboard) |
 | 🛒 FreshMart data warehouse & dashboard | [View →](https://waranyu-cv.vercel.app/freshmart.html) | [Repo](https://github.com/jo-bancherdvanich/freshmart-data-warehouse) |
-| ⚽ Football club database | [View →](https://waranyu-cv.vercel.app/football-database.html) | [Repo](https://github.com/jo-bancherdvanich/soccer-competition-database) |
 | 🌦️ WeatherWise | [View →](https://waranyu-cv.vercel.app/weatherwise.html) | [Repo](https://github.com/jo-bancherdvanich/Weatherwise_Waranyu.B) |
 
 ---
