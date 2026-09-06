@@ -2,7 +2,7 @@
 
 A relational database for a soccer competition, designed and implemented in **Oracle SQL**. The project takes a real-world scenario (clubs, players, games, referees, goals, cards, and awards) and turns it into a normalised 16-table database with full DDL, sample data, and analytical queries that answer practical business questions.
 
-Built for **ISYS5000 Database** at Curtin University as a group project (Group 13). My contribution is described below.
+Built at Curtin University, Perth, as a three-person group project. My contribution is described below.
 
 ---
 
@@ -102,7 +102,7 @@ once.
 
 ## 👥 Team & My Contribution
 
-This was a group project for ISYS5000 (Group 13: Waranyu Bancherdvanich, Farhan Bhuiyan, Thinley Dorji). The work spanned conceptual design (ERD and business rules), the logical schema and normalisation, the Oracle DDL and data, and the analytical queries. I contributed across the design, schema, and SQL implementation.
+This was a three-person group project (Waranyu Bancherdvanich, Farhan Bhuiyan, Thinley Dorji). The work spanned conceptual design (ERD and business rules), the logical schema and normalisation, the Oracle DDL and data, and the analytical queries. I contributed across the design, schema, and SQL implementation.
 
 ---
 

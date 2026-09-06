@@ -1,6 +1,6 @@
 # Business Rules (Revised)
 
-These business rules describe the relationships in the Soccer Competition Database. This is a **revised version** that incorporates marker feedback: business rules 7, 17 have corrected descriptors, and the Substitution relationship (old rule 19) has been removed because substitutions are captured within `GamePlayer` (via `gameMinute` and the "Substitute" start position) rather than in a separate table.
+These business rules describe the relationships in the Soccer Competition Database. This is a **revised version** that incorporates review feedback: business rules 7, 17 have corrected descriptors, and the Substitution relationship (old rule 19) has been removed because substitutions are captured within `GamePlayer` (via `gameMinute` and the "Substitute" start position) rather than in a separate table.
 
 1. **CompetitionWeek and Game**
    - 1a. A CompetitionWeek includes one or more than one Game.
